@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="columns">
+
+    <div class="news-container">
+        <h1 class="news-heading">NEWS</h1>
+        <ul class="news-list">
+            {% for article in articles %}
+            <li class="news-articles">
+                <h3 class="article-title">{{ article.title }}</h3>
+                <p class="article-description">{{ article.description }}</p>
+                <a href="{{ article.url }}" class="article-url">Read more</a>
+            </li>
+            {% empty %}
+            <li>No crime news found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="slides-container">
+
+        <div class="slideshow-container">
+            <h1 class="motto">Here to Protect</h1>
+            <div class="mySlides fade">
+                <div class="show-side">
+                    <img class="slide-image" src="https://thumbs.dreamstime.com/b/catch-apartment-robber-surprise-call-police-report-crime-flat-vector-illustration-216364904.jpg" alt="1">
+                    <div class="text">Report a crime!</div>
+                </div>
+            </div>
+            
+            <div class="mySlides fade">
+                <div class="show-side">
+                    
+                    <img class="slide-image" src="https://media.istockphoto.com/id/1191001427/vector/on-screen-email-notification-new-email-flat-cartoon-design-of-desktop-pc.jpg?s=612x612&w=0&k=20&c=0A21i_xogKpo_fUPzz_UD1ZEkVfxW93n942DK5WKjg8=" alt="2">
+                    <div class="text">Get notified!</div>
+                </div>
+            </div>
+            
+            <div class="mySlides fade">
+                <div class="show-side">
+                    <img class="slide-image" src="https://media.istockphoto.com/id/1300007488/vector/male-and-female-characetrs-are-reading-latest-news.jpg?s=170667a&w=is&k=20&c=SBcQKepYotYuooLiQRmp9RGBj-mt8YrCCP23ngfS-JY=" alt="3">
+                    <div class="text">Read the history!</div>
+                </div>
+            </div>
+            
+        </div>
+        <br>
+        
+        <div style="text-align:center">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
+
+    <div class="contact-container">
+        <h1>Contact!</h1>
+    </div>
+
+</div>
+
+<footer>
+
+</footer>
+
+<script>
+    let slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+        setTimeout(showSlides, 5000); // Change image every 2 seconds
+    }
+</script>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .columns {
+        display: grid;
+	    grid-template-columns: 320px 800px 320px;
+	    text-align: center;
+    }
+
+    .news-heading {
+        border-bottom: 2px solid black;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .news-container ,  .slides-container , .contact-container{
+        padding: 16px;
+        max-height: 600px;
+        margin: 2px;
+        background-color: #cccccc;
+    }
+    
+    .news-articles {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 20px 0;
+    }
+
+    .news-list {
+        overflow: scroll;
+        max-height: 500px;
+    }
+
+    .article-title, .article-description, .article-url {
+        font-size: small;
+    }
+    
+    .motto {
+        /* position: absolute; */
+        border-bottom: 2px solid black;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .mySlides {
+        display: none;
+        margin-top: 10px;
+    }
+
+    /* Slideshow container */
+    .slideshow-container {
+        max-width: 800px;
+        position: relative;
+        margin: auto;
+    }
+
+    .slide-image {
+        opacity: 0.5;
+        box-shadow: #717171;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .show-side{
+        /* display: flex;
+        flex-direction: row; */
+        align-items: center;
+        overflow: hidden;
+    }
+
+    /* Caption text */
+    .text {
+        /* color: #f2f2f2; */
+        color: black;
+        font-size: 15px;
+        padding: 8px 12px;
+        position: absolute;
+        bottom: 8px;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* The dots/bullets/indicators */
+    .dot {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+    }
+
+    .active {
+        background-color: #717171;
+    }
+
+    /* Fading animation */
+    .fade {
+        animation-name: fade;
+        animation-duration: 1.5s;
+    }
+
+    @keyframes fade {
+        from {
+            opacity: .4
+        }
+
+        to {
+            opacity: 1
+        }
+    }
+
+    /* On smaller screens, decrease text size */
+    @media only screen and (max-width: 300px) {
+        .text {
+            font-size: 11px
+        }
+    }
+
+    
+
+</style>
+
+{% endblock %}

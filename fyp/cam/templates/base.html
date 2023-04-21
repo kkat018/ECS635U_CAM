@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    
+    <title>{% block title %}{% endblock %}</title>
+    {% block css %}
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    
+    <!-- Boxicons CDN Link -->
+    <!-- <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+<body>
+    <!-- <nav>
+        <div class="logo">CAM</div>
+        <input type="checkbox" id="click">
+        <label for="click" class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </label>
+        <ul>
+            <li><a class="active" href="http://127.0.0.1:8000/cam">Home</a></li>
+            <li><a href="http://127.0.0.1:8000/cam/complain">Report</a></li>
+            <li><a href="http://127.0.0.1:8000/cam/user">User</a></li>
+            <li><a href="#">History</a></li>
+            <li><a href="#">Settings</a></li>
+        </ul>
+    </nav>
+    <div class="content">
+       
+    </div> -->
+
+    <nav class="navbar">
+        <a class="navbar-brand logo" href="#">CAM</a>
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button> -->
+        <input type="checkbox" id="click">
+        <label for="click" class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </label>
+        <!-- <div class="collapse navbar-collapse" id="navbarNav"> -->
+            <ul class="navbar-nav">
+                <li><a class="active" href="http://127.0.0.1:8000/cam">Home</a></li>
+                <li><a href="http://127.0.0.1:8000/cam/complain">Report</a></li>
+                <li><a href="http://127.0.0.1:8000/cam/user">User</a></li>
+                <li><a href="#">History</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        <!-- </div> -->
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+
+<style>
+    /* Navigation bar styles */
+    /* .navbar {
+        background-color: #010304;
+        border-bottom: 1px solid #dee2e6;
+    } */
+
+    /* .navbar-brand {
+        font-weight: bold;
+        font-size: 1.5rem;
+    } */
+
+    /* .navbar-nav {
+        margin-left: auto;
+    }
+
+    .nav-link {
+        font-size: 1.2rem;
+        color: #343a40;
+    }
+
+    .nav-link:hover {
+        color: #007bff;
+    } */
+
+    /* Container styles */
+    .container {
+        /* max-width: 800px; */
+        margin: 0 auto;
+    }
+</style>
+
+</html>

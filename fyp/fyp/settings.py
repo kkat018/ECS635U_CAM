@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cam.apps.CamConfig',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +48,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTH_USER_MODEL = 'cam.User'
+
+STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    (BASE_DIR / 'cam/static')
 ]
 
 ROOT_URLCONF = 'fyp.urls'
