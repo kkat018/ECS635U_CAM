@@ -5,6 +5,7 @@
 
 <div class="form-wrapper">
     <h2>REPORT</h2>
+    <p>Hi {{request.user.name}}</p>
     {% csrf_token %}
     <form action="{% url 'submit_crime_report' %}" method="post"> 
         <!-- add required for all fields -->
@@ -22,7 +23,7 @@
         <select id="location" name="location" >
             <option value="">Select a location</option>
             {% for place in places %}
-            <option value="{{ place.ID }}">{{ place.DISTRICT_BOROUGH }}</option>
+            <option value="{{ place.DISTRICT_BOROUGH }}">{{ place.DISTRICT_BOROUGH }}</option>
             {% endfor %}
         </select> <br>
         
@@ -41,6 +42,8 @@
         margin-top: 2em;
         padding: 5px;
         margin-bottom: 10px;
+        overflow-y: scroll;
+        max-height: 600px;
     }
 
     h2 {

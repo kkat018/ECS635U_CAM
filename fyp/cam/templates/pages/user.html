@@ -4,21 +4,39 @@
 {% block content %}
 
         <div class="profile">
+			{% if request.user.is_authenticated %}
+			<h2 class="name">{{ request.user.name }}</h2>
+			<p class="email">{{ request.user.email }}</p>
+			{% else %}
+			<!-- handle the case where the user is not logged in -->
+			
             <img class="profile-pic" src="" alt="Profile Picture">
             <h2 class="name">John Doe</h2>
 			<p class="email">johndoe@email.com</p>
-			<h3>Address List:</h3>
-            <ul class="address-list dynamic-column-list">
-                <li>123 Main St.</li>
-                <li>456 Elm St.</li>
-                <li>789 Oak St.</li>
-            </ul>
-            <form class="add-address-form">
+			{% endif %}
+			<ul class="address-list dynamic-column-list">
+				{% if request.user.location.all %}
+					{% for location in request.user.location.all %}
+						<li>{{ location }}</li>
+					{% endfor %}
+				{% else %}
+					<li>You have no saved Location!</li>
+				{% endif %}
+			</ul>
+
+			{% csrf_token %}
+            <form class="add-address-form" action="{% url 'save_location' %}" method="post">
                 <label for="new-address">Add New Address:</label>
-                <input type="text" id="new-address" name="new-address">
+                <!-- <input type="text" id="new-address" name="new-address"> -->
+				<select id="location" name="location">
+					<option value="">Select a location</option>
+					{% for place in places %}
+					<option value="{{ place.DISTRICT_BOROUGH }}">{{ place.DISTRICT_BOROUGH }}</option>
+					{% endfor %}
+				</select>
                 <button type="submit" id="add-button">Add</button>
             </form>
-            <form class="logout-form">
+            <form class="logout-form" action="{% url 'logout' %}">
                 <button type="submit">Log Out</button>
             </form>
             <form class="delete-account-form">
@@ -45,38 +63,38 @@
 
 	
 	// Get the elements we need
-		const addressList = document.querySelector('.address-list');
-		const addForm = document.querySelector('.add-address-form');
-		const newAddressInput = document.querySelector('#new-address');
-		const addButton = document.querySelector('#add-button');
+		// const addressList = document.querySelector('.address-list');
+		// const addForm = document.querySelector('.add-address-form');
+		// const newAddressInput = document.querySelector('#new-address');
+		// const addButton = document.querySelector('#add-button');
 
-		// Load the list from local storage if it exists
-		const savedList = localStorage.getItem('addressList');
-		if (savedList) {
-			addressList.innerHTML = savedList;
-		}
+		// // Load the list from local storage if it exists
+		// const savedList = localStorage.getItem('addressList');
+		// if (savedList) {
+		// 	addressList.innerHTML = savedList;
+		// }
 
-		// Add a click event listener to the Add button
-		addButton.addEventListener('click', function (event) {
-			// Prevent the default form submission behavior
-			event.preventDefault();
+		// // Add a click event listener to the Add button
+		// addButton.addEventListener('click', function (event) {
+		// 	// Prevent the default form submission behavior
+		// 	event.preventDefault();
 
-			// Get the value of the new address input field
-			const newAddress = newAddressInput.value;
+		// 	// Get the value of the new address input field
+		// 	const newAddress = newAddressInput.value;
 
-			// Create a new li element with the new address
-			const newAddressItem = document.createElement('li');
-			newAddressItem.textContent = newAddress;
+		// 	// Create a new li element with the new address
+		// 	const newAddressItem = document.createElement('li');
+		// 	newAddressItem.textContent = newAddress;
 
-			// Add the new li element to the address list
-			addressList.appendChild(newAddressItem);
+		// 	// Add the new li element to the address list
+		// 	addressList.appendChild(newAddressItem);
 
-			// Save the updated list to local storage
-			localStorage.setItem('addressList', addressList.innerHTML);
+		// 	// Save the updated list to local storage
+		// 	localStorage.setItem('addressList', addressList.innerHTML);
 
-			// Clear the input field
-			newAddressInput.value = '';
-		});
+		// 	// Clear the input field
+		// 	newAddressInput.value = '';
+		// });
 
 
 
@@ -141,6 +159,11 @@
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
+
+  padding: 10px;
+    margin: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .add-address-form label {

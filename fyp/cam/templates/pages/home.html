@@ -26,7 +26,9 @@
             <div class="mySlides fade">
                 <div class="show-side">
                     <img class="slide-image" src="https://thumbs.dreamstime.com/b/catch-apartment-robber-surprise-call-police-report-crime-flat-vector-illustration-216364904.jpg" alt="1">
-                    <div class="text">Report a crime!</div>
+                    <div class="text">REPORT A CRIME
+                        <br> Your voice can make a difference - report now!
+                    </div>
                 </div>
             </div>
             
@@ -34,14 +36,18 @@
                 <div class="show-side">
                     
                     <img class="slide-image" src="https://media.istockphoto.com/id/1191001427/vector/on-screen-email-notification-new-email-flat-cartoon-design-of-desktop-pc.jpg?s=612x612&w=0&k=20&c=0A21i_xogKpo_fUPzz_UD1ZEkVfxW93n942DK5WKjg8=" alt="2">
-                    <div class="text">Get notified!</div>
+                    <div class="text">GET NOTIFIED
+                        <br> Stay in the loop - get notified instantly!
+                    </div>
                 </div>
             </div>
             
             <div class="mySlides fade">
                 <div class="show-side">
                     <img class="slide-image" src="https://media.istockphoto.com/id/1300007488/vector/male-and-female-characetrs-are-reading-latest-news.jpg?s=170667a&w=is&k=20&c=SBcQKepYotYuooLiQRmp9RGBj-mt8YrCCP23ngfS-JY=" alt="3">
-                    <div class="text">Read the history!</div>
+                    <div class="text">READ HISTORY
+                        <br> Explore the past - learn from it and make a better future!
+                    </div>
                 </div>
             </div>
             
@@ -55,15 +61,37 @@
         </div>
     </div>
 
-    <div class="contact-container">
-        <h1>Contact!</h1>
+    <div class="notification-container">
+        <h1 class="notifications-heading">Crime Notifications</h1>
+        <h6>New!</h6>
+        <div class="notifications-list">
+            {% if unread_notifications %}
+            <ul class="notification-ul">
+                {% for notification in unread_notifications %}
+                <li class="notification-li">
+                    <a href="{% url 'mark_notification_as_read' notification.id %}">Read?</a>
+                    {{ notification.complaint.datetime }} - 
+                    {{ notification.complaint.location }} - 
+                    {{ notification.complaint.complaint }} </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% if read_notifications %}
+                <h6>Old:</h6>
+                <ul class="notification-ul">
+                    {% for notification in read_notifications %}
+                    <li class="notification-li">{{ notification.complaint.datetime }} 
+                        - {{ notification.complaint.location }} 
+                        - {{ notification.complaint.complaint }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% if not unread_notifications and read_notifications %}
+                    <p>No crime notifications found.</p>
+                    {% endif %}
+            </div>
     </div>
-
 </div>
-
-<footer>
-
-</footer>
 
 <script>
     let slideIndex = 0;
@@ -94,7 +122,7 @@
 
     .columns {
         display: grid;
-	    grid-template-columns: 320px 800px 320px;
+	    grid-template-columns: 320px 760px 360px;
 	    text-align: center;
     }
 
@@ -104,11 +132,18 @@
         text-align: center;
     }
 
-    .news-container ,  .slides-container , .contact-container{
+    .slides-container {
         padding: 16px;
         max-height: 600px;
         margin: 2px;
-        background-color: #cccccc;
+        /* background-color: #cccccc; */
+    }
+
+    .news-container , .notification-container{
+        padding: 16px;
+        height: 624px;
+        margin: 2px;
+        /* background-color: #cccccc; */
     }
     
     .news-articles {
@@ -118,9 +153,9 @@
         margin: 20px 0;
     }
 
-    .news-list {
+    .news-list, .notifications-list {
         overflow: scroll;
-        max-height: 500px;
+        max-height: 550px;
     }
 
     .article-title, .article-description, .article-url {
@@ -137,6 +172,7 @@
     .mySlides {
         display: none;
         margin-top: 10px;
+        position: relative;
     }
 
     /* Slideshow container */
@@ -147,11 +183,12 @@
     }
 
     .slide-image {
-        opacity: 0.5;
+        opacity: 0.3;
         box-shadow: #717171;
         width: 100%;
-        height: auto;
+        max-height: 500px;
         object-fit: cover;
+        display: block;
     }
 
     .show-side{
@@ -159,18 +196,23 @@
         flex-direction: row; */
         align-items: center;
         overflow: hidden;
+        position: relative;
     }
 
     /* Caption text */
     .text {
         /* color: #f2f2f2; */
         color: black;
-        font-size: 15px;
+        font-size: xx-large;
         padding: 8px 12px;
-        position: absolute;
         bottom: 8px;
         width: 100%;
         text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: 900;
     }
 
     /* The dots/bullets/indicators */
@@ -192,6 +234,22 @@
     .fade {
         animation-name: fade;
         animation-duration: 1.5s;
+    }
+
+    .notifications-heading {
+        border-bottom: 2px solid black;
+    }
+    .notification-ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .notification-li {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f0f0f0;
     }
 
     @keyframes fade {
