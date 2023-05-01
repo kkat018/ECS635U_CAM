@@ -6,12 +6,17 @@ class Location(models.Model):
 
     def __str__(self):
         return self.name
+ 
 
-class User(AbstractUser): #kashish1, dontforget123
-    name = models.CharField("Name", max_length=50, unique=False)
+class User(AbstractUser):
+    username = None
+    name = models.CharField("Name", max_length=50)
     number = models.IntegerField ("Number", blank = True, null= True)
-    email = models.EmailField( "Email", max_length=254 )
+    email = models.EmailField("Email", max_length=254, unique=True)
     location = models.ManyToManyField( Location, max_length=50, default=None, blank=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['name']
 
     def __str__(self):
         return self.name
@@ -21,7 +26,6 @@ class User(AbstractUser): #kashish1, dontforget123
             'id': self.id,
             'username': self.name,
             'email': self.email,
-            # 'locations': [loc.name for loc in self.location.all()] or None
             'locations': self.location
         }
 
@@ -46,6 +50,3 @@ class Notification(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     is_read = models.BooleanField(default=False)
     complaint = models.ForeignKey(Crime, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return f"{self.user_id} - {self.complaint} - {self.is_read}"

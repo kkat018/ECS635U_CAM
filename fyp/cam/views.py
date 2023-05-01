@@ -29,7 +29,6 @@ def signup(request):
         form = SignupForm(request.POST)
         
         if form.is_valid():
-            form.save()
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')
             phone_number = form.cleaned_data.get('phone_number')
@@ -57,9 +56,6 @@ def login(request):
         email = request.POST['email']
         password = request.POST['password']
         user_check = User.objects.filter(name=name)
-        # print(name, password, email)
-        # user = auth.authenticate(username=name, password=password)
-        # user = authenticate(request, name=name, password=password)
         user = User.objects.filter(name=name).first()
         print(user, user_check)
         if user is not None:
@@ -88,15 +84,14 @@ def home(request):
         'pageSize': 12,
         'apiKey': '7136729da47947eab1aa1ef4ff411f66'
     }
-    print("home page user: ", request.user)
+
     # Send GET request to API
     response = requests.get(url, params=params)
 
     unread_notifications, read_notifications = [], []
-    # Parse response JSON and extract articles
+   
     articles = response.json().get('articles', [])
-    print("noti check:", Notification.objects.filter(user_id=request.user,
-                                                     is_read=False).first().complaint.complaint)
+    
     if Notification.objects.filter(user_id=request.user):
         unread_notifications = Notification.objects.filter(user_id=request.user,
                                                            is_read=False)
@@ -106,31 +101,26 @@ def home(request):
     context = {'articles': articles ,
                "unread_notifications": unread_notifications,
                "read_notifications": read_notifications}
-    # context = {'articles': articles}
 
     return render(request, 'pages/home.html', context)
 
 def complainForm(request):
-    request.user = User.objects.filter(name='User2')[0]
     response = requests.get(
         'https://api.os.uk/search/names/v1/find?key=CQrAclSYxs54aCSAaxybZGxx8wyryjQC&query=london&maxresults=100')
     
     locations = []
     if response.ok:
-        # places = response.json()['results']
         data = response.json()
         results = data.get('results', [])
         places = [result['GAZETTEER_ENTRY'] for result in results]
         
         for result in data['results']:
             name = result['GAZETTEER_ENTRY']['DISTRICT_BOROUGH']
-            # print(name)
             if name not in locations:
                 locations.append(name)
 
            # create Location objects and save to database
         for location in locations:
-        #     Location.objects.create(name=location)
             try:
                 location = Location.objects.filter(name=location)
 
@@ -146,7 +136,6 @@ def complainForm(request):
 @csrf_exempt
 def submit_crime_report(request):
     request.user = User.objects.filter(name='User2').first()
-    print("location ", request.POST)
     if request.method == 'POST':
         reporter_id = request.user
         datetime = request.POST['date']
@@ -156,25 +145,17 @@ def submit_crime_report(request):
         new_crime = Crime(reporter_id=reporter_id, datetime=datetime,
                         location=location, complaint=complaint)
         new_crime.save()
-        print("new crime: ", new_crime)
-        # messages.success(request, "Complaint submitted!")
-        # user_locations = User.User.objects.filter(name='User2').first().to_dict()
+        
         user_locations = User.objects.all()
         for user in user_locations:
             if user.location.filter(name=location.name):
-                print("user check: ", user)
                 Notification.objects.create(
                     user_id=user, complaint=new_crime, is_read=False)
 
-        # create a notification for each user
-
-            # unread_count = Notification.objects.filter(is_read=False).count()
         return redirect('http://localhost:8000/cam/home')
     else:
         messages.error(request, "Try again!")
         return redirect('http://localhost/8000/cam/complainForm')
-        
-    return HttpResponse()
 
 
 def mark_notification_as_read(request, notification_id):
@@ -194,20 +175,10 @@ def UserPage(request):
         'https://api.os.uk/search/names/v1/find?key=CQrAclSYxs54aCSAaxybZGxx8wyryjQC&query=london&maxresults=100')
 
     if response.ok:
-        # places = response.json()['results']
         data = response.json()
         results = data.get('results', [])
         places = [result['GAZETTEER_ENTRY'] for result in results]
-    user_locations = User.objects.all()
-    for user in user_locations:
-        if user.location.filter(name='Camden'):
-            print("user check: ", user)
-    # print("user location: ", user_locations.location.filter(name='Camden'))
-    locations = request.user.location
-    user = request.user.name
-    # print("user  ", user)
-    # print("Loc \n", Location.objects.all())
-    # print("hello ", locations)
+
     return render(request, 'pages/user.html', {'places': places})
 
 
@@ -215,17 +186,9 @@ def UserPage(request):
 def save_location(request):
     request.user = User.objects.filter(name='bella').first()
     if request.method == 'POST':
-        print("what isss: \n", request.POST)
         location_name = request.POST.get('location')
         if location_name:
-            # for locat in Location.objects.all():
-            #     print("loc\n", locat.name)
-            print("just checking, ", location_name)
             location = Location.objects.filter(name=location_name).first()
-            print("come in\n " , location)
-            # user = request.user
-            # check = request.user.is_authenticated
-            # print("user  ",user)
             request.user.location.add(location)
             request.user.save()
         else:

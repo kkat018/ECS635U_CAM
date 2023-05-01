@@ -20,7 +20,6 @@
     </div>
 
     <div class="slides-container">
-
         <div class="slideshow-container">
             <h1 class="motto">Here to Protect</h1>
             <div class="mySlides fade">
@@ -63,19 +62,28 @@
 
     <div class="notification-container">
         <h1 class="notifications-heading">Crime Notifications</h1>
-        <h6>New!</h6>
         <div class="notifications-list">
-            {% if unread_notifications %}
-            <ul class="notification-ul">
-                {% for notification in unread_notifications %}
-                <li class="notification-li">
-                    <a href="{% url 'mark_notification_as_read' notification.id %}">Read?</a>
-                    {{ notification.complaint.datetime }} - 
-                    {{ notification.complaint.location }} - 
-                    {{ notification.complaint.complaint }} </li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
+
+            {% if not unread_notifications and not read_notifications %}
+                <p>No crime notifications found.</p>
+
+            {% else %}
+
+                {% if unread_notifications %}
+                <h6>New!</h6>
+                <ul class="notification-ul">
+                    {% for notification in unread_notifications %}
+                    <li class="notification-li">
+                        <a href="{% url 'mark_notification_as_read' notification.id %}">Read?</a>
+                        {{ notification.complaint.datetime }} - 
+                        {{ notification.complaint.location }} - 
+                        {{ notification.complaint.complaint }} </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                <p>No new crimes reported in your saved areas!</p>
+                {% endif %} 
+
                 {% if read_notifications %}
                 <h6>Old:</h6>
                 <ul class="notification-ul">
@@ -85,11 +93,12 @@
                         - {{ notification.complaint.complaint }}</li>
                         {% endfor %}
                     </ul>
-                    {% endif %}
-                    {% if not unread_notifications and read_notifications %}
-                    <p>No crime notifications found.</p>
-                    {% endif %}
-            </div>
+                {% else %}
+                    <p>No old crimes to show in your saved areas!</p>
+                {% endif %}
+
+            {% endif %}
+        </div>
     </div>
 </div>
 
@@ -136,14 +145,12 @@
         padding: 16px;
         max-height: 600px;
         margin: 2px;
-        /* background-color: #cccccc; */
     }
 
     .news-container , .notification-container{
         padding: 16px;
         height: 624px;
         margin: 2px;
-        /* background-color: #cccccc; */
     }
     
     .news-articles {
@@ -163,7 +170,6 @@
     }
     
     .motto {
-        /* position: absolute; */
         border-bottom: 2px solid black;
         font-weight: bold;
         text-align: center;
@@ -175,7 +181,7 @@
         position: relative;
     }
 
-    /* Slideshow container */
+
     .slideshow-container {
         max-width: 800px;
         position: relative;
@@ -192,16 +198,13 @@
     }
 
     .show-side{
-        /* display: flex;
-        flex-direction: row; */
         align-items: center;
         overflow: hidden;
         position: relative;
     }
 
-    /* Caption text */
+
     .text {
-        /* color: #f2f2f2; */
         color: black;
         font-size: xx-large;
         padding: 8px 12px;
@@ -215,7 +218,6 @@
         font-weight: 900;
     }
 
-    /* The dots/bullets/indicators */
     .dot {
         height: 15px;
         width: 15px;
@@ -230,7 +232,6 @@
         background-color: #717171;
     }
 
-    /* Fading animation */
     .fade {
         animation-name: fade;
         animation-duration: 1.5s;
@@ -262,14 +263,12 @@
         }
     }
 
-    /* On smaller screens, decrease text size */
+    /* on smaller screens, decrease text size */
     @media only screen and (max-width: 300px) {
         .text {
             font-size: 11px
         }
     }
-
-    
 
 </style>
 

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-
 {% block content %}
+
 <h2>Sign up</h2>
 <form method="post">
     {% csrf_token %}
@@ -10,57 +10,50 @@
 
 <style>
 
-h2 {
+  h2 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  form {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
 
-/* Style the form fields */
-form input
-/* [type="text"],
-form input[type="email"],
-form input[type="password1"],
-form input[type="password2"]  */
-{
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+  form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
 
-.helptext {
-    font-size: small;
-}
+  .helptext {
+      font-size: small;
+  }
 
-/* Style the form button */
-form button[type="submit"] {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-  cursor: pointer;
-}
+  form button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+  }
 
-/* Style the form button on hover */
-form button[type="submit"]:hover {
-  background-color: #3e8e41;
-}
+  form button[type="submit"]:hover {
+    background-color: #3e8e41;
+  }
 
-form ul {
-    font-size: smaller;
-}
+  form ul {
+      font-size: smaller;
+  }
 
 </style>
 {% endblock %}
